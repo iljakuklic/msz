@@ -17,12 +17,13 @@ Nedeterministický KA
  * Přechodová relace δ ∈ S×Σ×S
  * množina koncových stavů F ⊆ S
 
-> data NDFSM ste alpha = NDFSM {
->     nd_s0     :: ste,
->     nd_delta  :: S.Set (ste, alpha, ste),
->     nd_fini   :: ste -> Bool
->  }
+> data NDFSM ste alpha = NDFSM {               -- ste = stavy, alpha = abeceda
+>     nd_s0     :: ste,                        -- poč. stav
+>     nd_delta  :: S.Set (ste, alpha, ste),    -- přechodová relace
+>     nd_fini   :: ste -> Bool                 -- koncové stavy dané charakteristickou funkcí
+>   }
 
+(Tato reprezentace nijak nevynucuje konečnost příslušných množin.)
 
 KA akceptuje řetězec, pokud existuje alespoň jedna posloupnost přechodů
 z daného stavu do koncového během zpracování vstupního řetězce.
