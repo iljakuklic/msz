@@ -8,7 +8,7 @@ který reprezentuje buď konkrétní symbol nebo epsilon (ε).
 
 > data WithEps alphabet = Sym alphabet | Eps deriving Eq
 
-Podpora pro tisk na terminál:
+Podpora pro tisk na konsoli:
 
 > instance (Show a) => Show (WithEps a) where
 >     show (Sym x) = show x
