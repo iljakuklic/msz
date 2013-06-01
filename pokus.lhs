@@ -9,9 +9,7 @@ Just testing
 
 A comment goes here
 
-\begin{code}
-factorial n = product [1..n]
-test = putStrLn . show $ factorial 100
-\end{code}
+> factorial n = product [1..n]
+> test = putStrLn . show $ factorial 100
 
 End of test.
