@@ -1,5 +1,5 @@
-MAT -- Algebraické struktury
-============================
+MAT: Algebraické struktury
+==========================
 
 Algebraickým strukturám odpovídají v Haskellu typové třídy, nosná množina je typová proměnná dané třídy.
 Požadované zákony začínají na `prop` (od property) a vrací `True` je-li daný zákon splněn.
