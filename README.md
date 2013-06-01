@@ -8,6 +8,5 @@ GitHub to taky přežvýká a~ozobáčkovaným řádkům zvýrazní syntaxi, zat
 Jmenné konvence: `ZKR_KratkyNazevOtazky.lhs`, kde `ZKR` je zkratka předmětu, která je následována podtržítkem a zkráceným názvem otázky.
 Číslo otázky uvedeno není, stejně to má každý obor jinak...
 Pokud by se nějaká otázka příliš rozlezla, bude rozělena na několik částí následovně: `ZKR_KratkyNazevOtazky_Podotazka.lhs`.
-Speciální předmět `000` (tři nuly) obsahuje obecně užitečné pomocné funkce.
 
 Přispivatelé, patche a forky vítány. Enjoy.
