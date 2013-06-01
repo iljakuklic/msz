@@ -12,13 +12,13 @@ Nedeterministický KA
 *Nedeterministický konečný automat* je pětice:
 
  * Konečná abeceda Σ
- * Konečná množina stavů S
- * Počáteční stav s<sub>0</sub> ∈ S
+ * Konečná množina stavů Q
+ * Počáteční stav q<sub>0</sub> ∈ Q
  * Přechodová relace δ ∈ S×Σ×S
- * množina koncových stavů F ⊆ S
+ * množina koncových stavů F ⊆ Q
 
 > data NDFSM ste alpha = NDFSM {               -- ste = stavy, alpha = abeceda
->     nd_s0     :: ste,                        -- poč. stav
+>     nd_q0     :: ste,                        -- poč. stav
 >     nd_delta  :: S.Set (ste, alpha, ste),    -- přechodová relace
 >     nd_fini   :: ste -> Bool                 -- koncové stavy dané charakteristickou funkcí
 >   }
@@ -39,5 +39,5 @@ Nedeterminismus reprezentujeme pomocí monády seznam (bacha, může být neefek
 Je vstup akceptován z počátečního stavu?
 
 > ndAccepts :: (Eq alpha, Eq t) => NDFSM t alpha -> [alpha] -> Bool
-> ndAccepts fsm input = or $ ndAcceptsFrom fsm (nd_s0 fsm) input
+> ndAccepts fsm input = or $ ndAcceptsFrom fsm (nd_q0 fsm) input
 
