@@ -35,8 +35,9 @@ Nedeterminismus reprezentujeme pomocí monády seznam (bacha, může být neefek
 > ndAcceptsFrom fsm state (x:xs) = do
 >     nextState <- nub [ s' | (s, a, s') <- S.toList (nd_delta fsm), s == state, x == a ]
 >     ndAcceptsFrom fsm nextState xs
->
-> -- je vstup akceptován z počátečního stavu?
+
+Je vstup akceptován z počátečního stavu?
+
 > ndAccepts :: (Eq alpha, Eq t) => NDFSM t alpha -> [alpha] -> Bool
 > ndAccepts fsm input = or $ ndAcceptsFrom fsm (nd_s0 fsm) input
 
