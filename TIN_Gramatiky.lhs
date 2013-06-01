@@ -4,7 +4,7 @@ TIN: Klasifikace gramatik
 Nejdříve je třeba definovat několik pomocných datových typů.
 
 Bude-li potřeba uvažovat prázdné symboly, využujeme následujícího typu,
-který reprezentuje buď konkrétní symbol nebo $\epsilon$.
+který reprezentuje buď konkrétní symbol nebo epsilon (ε).
 
 > data WithEps alphabet = Sym alphabet | Eps deriving Eq
 
