@@ -5,9 +5,13 @@ Obligatoární importy:
 
 > import Data.List(nub)
 > import qualified Data.Set as S
+> import qualified Data.Map as M
 > import ZZZ_Visualise
 > import qualified Text.PrettyPrint as P
 > import Text.PrettyPrint(($$), ($+$), (<+>), (<>))
+> import Control.Monad
+> import Data.Foldable as F
+> import Prelude hiding (or, any, concat, elem, foldr, foldl)
 
 Nedeterministický KA
 --------------------
@@ -93,10 +97,34 @@ Masochisti můžou vyzkoušet:
 
 > fsm02_display = display $ toDot fsm02
 
+Deterministický konečný automat
+-------------------------------
+
+*Deterministický KA*
+se liší především tvarem přechodové relace, která je funkcí ze starého stavu a symbolu na vstupu
+do nového stavu. Zbytek definice je stejný.
+
+ * Přechodová funkce δ : S×Σ→S
+
+> data DFSM ste alpha = DFSM {              -- ste = stavy, alpha = abeceda
+>     d_q0     :: ste,                      -- poč. stav
+>     d_delta  :: M.Map (ste, alpha) ste,   -- přechodová funkce (reprezentována MAPem)
+>     d_fini   :: ste -> Bool               -- koncové stavy dané charakteristickou funkcí
+>   }
+
+Každý deterministický KA je speciálním případem nedeterministického a je možné jej triviálně převést.
+
+> unDeterminize :: (Ord alpha, Ord ste) => DFSM ste alpha -> NDFSM ste alpha
+> unDeterminize fsm@(DFSM q0 delta fini) = NDFSM q0 delta' fini
+>     where delta' = S.fromList [ (q,a,r) | ((q,a),r) <- M.toList delta ]
+
+Pro každý nedeterministický KA lze sestavit ekvivalentní (přijímající stejný jazyk) deterministický KA.
+Tento svými stavy simuluje podmnožinu stavů, ve kterých můze nedeterministický KA v jeden moment být.
+
 Boring stuff
 ------------
 
-Vykreslení nedeterministického FSM do formátu .dot:
+Vykreslení FSM do formátu .dot:
 
 > instance (Show a, Show s, Ord s) => ToDot (NDFSM s a) where
 >     toDot fsm@(NDFSM q0 delta fini) = Dot dot where
@@ -112,6 +140,8 @@ Vykreslení nedeterministického FSM do formátu .dot:
 >         edges = P.vcat [ getSte q <+> P.text "->" <+> getSte r <+>
 >                          P.brackets (P.text "label=" <> P.doubleQuotes (P.text $ show a))
 >                          | (q,a,r) <- S.toList delta ]
+> instance (Show a, Ord a, Show s, Ord s) => ToDot (DFSM s a) where
+>     toDot = toDot . unDeterminize
 
 Links
 -----
