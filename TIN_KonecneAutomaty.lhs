@@ -174,6 +174,8 @@ Deterministická verze automatu `fsm00` vypadá takto:
 > fsm03 = determinize fsm00
 > fsm03_display = display $ toDot fsm03
 
+Přestože v tomto konkrétním případě počet stavů mírně klesne, obecně jich může vzniknout až *O(2<sup>|Q|</sup>)*.
+
 Boring stuff
 ------------
 
