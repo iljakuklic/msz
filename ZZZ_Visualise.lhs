@@ -51,5 +51,3 @@ Datové typy podporující grafovou vizualizaci přes `dot` implementují tříd
 
 > class ToDot t where
 >     toDot :: t -> Dot
-
-Pomocná funkce pro části dokumentu 
