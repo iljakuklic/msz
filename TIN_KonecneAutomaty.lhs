@@ -54,6 +54,10 @@ z množiny alpha musí být použity):
 > ndStates fsm = S.fromList $ [nd_q0 fsm] ++ concat [ [q,r] | (q,_,r) <- S.toList (nd_delta fsm) ]
 > ndAlphabet fsm = S.fromList $ [ a | (_, a, _) <- S.toList (nd_delta fsm) ]
 
+Lze také vytvořit automat příjmající komplement daného jazyka:
+
+> ndComplement fsm = fsm { nd_fini = not . nd_fini fsm }
+
 Následující nedeterministický konečný automat příjimá čísla od 0 do 255 zapsané pomocí desítkových
 číslic a ukončené znakem `#`. Jako množina stavů je použita podmnožina přirozených čísel.
 
