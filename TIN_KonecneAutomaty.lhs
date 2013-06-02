@@ -54,6 +54,33 @@ z množiny alpha musí být použity):
 > ndStates fsm = S.fromList $ [nd_q0 fsm] ++ concat [ [q,r] | (q,_,r) <- S.toList (nd_delta fsm) ]
 > ndAlphabet fsm = S.fromList $ [ a | (_, a, _) <- S.toList (nd_delta fsm) ]
 
+Následující nedeterministický konečný automat příjimá čísla od 0 do 255 zapsané pomocí desítkových
+číslic a ukončené znakem `#`. Jako množina stavů je použita podmnožina přirozených čísel.
+
+> fsm00 = NDFSM {
+>     nd_q0 = (0 :: Int),
+>     nd_fini = \q -> (q == 1),
+>     nd_delta = S.fromList ( [(0,d,2) | d <- digits ]                               -- 0-9
+>         ++ [ (0,d,3) | d <- tail digits ] ++ [ (3,d,4) | d <- digits ]             -- 10-99
+>         ++ [(0,'1',5)] ++ [ (5,d,6) | d <- digits ] ++ [ (6,d,7) | d <- digits ]   -- 100-199
+>         ++ [(0,'2',8)] ++ [(8,d,9) | d <- ['0'..'4']] ++ [(9,d,13) | d <- digits] -- 200-249
+>         ++ [(0,'2',10), (10,'5',11)] ++ [(11,d,12) | d <- ['0'..'5']]              -- 250-255
+>         ++ [ (q, '#', 1) | q <- [2,4,7,13,12] ] )  -- EOS
+>     }
+>   where digits = ['0'..'9']
+
+Pár ukázek:
+
+> fsm00_test01 = ndAccepts fsm00 "7#"
+> fsm00_test02 = ndAccepts fsm00 "33#"
+> fsm00_test03 = ndAccepts fsm00 "255#"
+> fsm00_test04 = ndAccepts fsm00 "260#"  -- odmítne
+> fsm00_test05 = ndAccepts fsm00 "#"     -- odmítne
+
+Vizualizaci automatu je možno provést takto:
+
+> fsm00_display = display $ toDot fsm00
+
 Deterministický konečný automat
 -------------------------------
 
@@ -141,6 +168,11 @@ Tento svými stavy simuluje podmnožinu stavů, ve kterých můze nedeterministi
 >         next s = [(s, a') | a' <- toList $ ndAlphabet fsm ]
 >         -- stav je konečný, jestliže obsahuje některý z původních stavů
 >         fini' q' = any (\q -> fini q) q'
+
+Deterministická verze automatu `fsm00` vypadá takto:
+
+> fsm03 = determinize fsm00
+> fsm03_display = display $ toDot fsm03
 
 Boring stuff
 ------------
