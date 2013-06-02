@@ -50,23 +50,6 @@ z množiny alpha musí být použity):
 > ndStates fsm = S.fromList $ [nd_q0 fsm] ++ concat [ [q,r] | (q,_,r) <- S.toList (nd_delta fsm) ]
 > ndAlphabet fsm = S.fromList $ [ a | (_, a, _) <- S.toList (nd_delta fsm) ]
 
-Vykreslení nedeterministického FSM do formátu .dot:
-
-> instance (Show a, Show s, Ord s) => ToDot (NDFSM s a) where
->     toDot fsm@(NDFSM q0 delta fini) = Dot dot where
->         states = zip (S.toList $ ndStates fsm) [ P.text ('n':show n) | n <- [1..] ]
->         getSte q = maybe (P.text "x") id $ lookup q states
->         dot = P.text "digraph {" $$ P.nest 4 (top $$ nodes $$ edges) $$ P.text "}"
->         top = P.text "node [shape=\"circle\"]" $$ P.text "s [shape=\"plaintext\",label=\"\"]"
->               $$ P.text "s ->" <+> getSte q0
->         nodes = P.vcat $ map node states
->         node (q,d) = d <+> P.brackets (
->                      P.text "label=" <> P.doubleQuotes (P.text $ show q) <> P.comma <+>
->                      if fini q then P.text "shape=\"doublecircle\"" else P.empty)
->         edges = P.vcat [ getSte q <+> P.text "->" <+> getSte r <+>
->                          P.brackets (P.text "label=" <> P.doubleQuotes (P.text $ show a))
->                          | (q,a,r) <- S.toList delta ]
-
 Příklad nedeterministického konečného automatu (stavy označíme čísly, opora: příklad 3.1):
 
 > fsm01 = NDFSM {
@@ -109,3 +92,28 @@ Má tedy mnohem více přechodů.
 Masochisti můžou vyzkoušet:
 
 > fsm02_display = display $ toDot fsm02
+
+Boring stuff
+------------
+
+Vykreslení nedeterministického FSM do formátu .dot:
+
+> instance (Show a, Show s, Ord s) => ToDot (NDFSM s a) where
+>     toDot fsm@(NDFSM q0 delta fini) = Dot dot where
+>         states = zip (S.toList $ ndStates fsm) [ P.text ('n':show n) | n <- [1..] ]
+>         getSte q = maybe (P.text "x") id $ lookup q states
+>         dot = P.text "digraph {" $$ P.nest 4 (top $$ nodes $$ edges) $$ P.text "}"
+>         top = P.text "node [shape=\"circle\"]" $$ P.text "s [shape=\"plaintext\",label=\"\"]"
+>               $$ P.text "s ->" <+> getSte q0
+>         nodes = P.vcat $ map node states
+>         node (q,d) = d <+> P.brackets (
+>                      P.text "label=" <> P.doubleQuotes (P.text $ show q) <> P.comma <+>
+>                      if fini q then P.text "shape=\"doublecircle\"" else P.empty)
+>         edges = P.vcat [ getSte q <+> P.text "->" <+> getSte r <+>
+>                          P.brackets (P.text "label=" <> P.doubleQuotes (P.text $ show a))
+>                          | (q,a,r) <- S.toList delta ]
+
+Links
+-----
+
+ * [Finite-state machine (wiki)](https://en.wikipedia.org/wiki/Finite-state_machine)
