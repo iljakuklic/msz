@@ -5,6 +5,9 @@ Obligatoární importy:
 
 > import Data.List(nub)
 > import qualified Data.Set as S
+> import ZZZ_Visualise
+> import qualified Text.PrettyPrint as P
+> import Text.PrettyPrint(($$), ($+$), (<+>), (<>))
 
 Nedeterministický KA
 --------------------
@@ -41,3 +44,68 @@ Je vstup akceptován z počátečního stavu?
 > ndAccepts :: (Eq alpha, Eq t) => NDFSM t alpha -> [alpha] -> Bool
 > ndAccepts fsm input = or $ ndAcceptsFrom fsm (nd_q0 fsm) input
 
+Získání použitých stavů (ne všechny musí být dosažitelné) a abecedy (ne všechny symboly
+z množiny alpha musí být použity):
+
+> ndStates fsm = S.fromList $ [nd_q0 fsm] ++ concat [ [q,r] | (q,_,r) <- S.toList (nd_delta fsm) ]
+> ndAlphabet fsm = S.fromList $ [ a | (_, a, _) <- S.toList (nd_delta fsm) ]
+
+Vykreslení nedeterministického FSM do formátu .dot:
+
+> instance (Show a, Show s, Ord s) => ToDot (NDFSM s a) where
+>     toDot fsm@(NDFSM q0 delta fini) = Dot dot where
+>         states = zip (S.toList $ ndStates fsm) [ P.text ('n':show n) | n <- [1..] ]
+>         getSte q = maybe (P.text "x") id $ lookup q states
+>         dot = P.text "digraph {" $$ P.nest 4 (top $$ nodes $$ edges) $$ P.text "}"
+>         top = P.text "node [shape=\"circle\"]" $$ P.text "s [shape=\"plaintext\",label=\"\"]"
+>               $$ P.text "s ->" <+> getSte q0
+>         nodes = P.vcat $ map node states
+>         node (q,d) = d <+> P.brackets (
+>                      P.text "label=" <> P.doubleQuotes (P.text $ show q) <> P.comma <+>
+>                      if fini q then P.text "shape=\"doublecircle\"" else P.empty)
+>         edges = P.vcat [ getSte q <+> P.text "->" <+> getSte r <+>
+>                          P.brackets (P.text "label=" <> P.doubleQuotes (P.text $ show a))
+>                          | (q,a,r) <- S.toList delta ]
+
+Příklad nedeterministického konečného automatu (stavy označíme čísly, opora: příklad 3.1):
+
+> fsm01 = NDFSM {
+>     nd_q0 = 0,
+>     nd_fini = \q -> (q == 1),
+>     nd_delta = S.fromList ( [ (0, 'z', 8), (4, 'z', 3) ]
+>         ++ [ (q, 'c', r) | (q,r) <- [(0,7),(2,2),(3,2),(4,2),(5,5),(6,5),(7,7),(8,7)] ]
+>         ++ [ (q, '.', 6) | q <- [0,7,8] ]
+>         ++ [ (q, 'e', 4) | q <- [0,5,7,8] ]
+>         ++ [ (q, '#', 1) | q <- [2,5,7] ] )
+>   }
+
+Těmito funkcemi jej lze převést na graphviz a vizualisovat:
+
+> fsm01_dot = toDot fsm01
+> fsm01_display = display fsm01_dot
+
+Vyzkoušíme, zda příjmá řetězec *zc.cezc#* (příklad v opoře) a pár dalších následovně:
+
+> fsm01_test01 = ndAccepts fsm01 "zc.cezc#"  -- OK
+> fsm01_test02 = ndAccepts fsm01 "c.ccc#"    -- OK
+> fsm01_test03 = ndAccepts fsm01 ".cezccc#"  -- OK
+> fsm01_test04 = ndAccepts fsm01 "zc.cezc"   -- chybí konec (odmítne)
+> fsm01_test05 = ndAccepts fsm01 "#"         -- prázdné číslo (odmítne)
+> fsm01_test06 = ndAccepts fsm01 "c.cc.cc#"  -- více desetinných teček (odmítne)
+
+Tento automat je podobný předchozímu, nicméně příjimá skutečná čísla ve vědeckém formátu (zakončené znakem `#`).
+Má tedy mnohem více přechodů.
+
+> fsm02 = NDFSM {
+>     nd_q0 = 0,
+>     nd_fini = \q -> (q == 1),
+>     nd_delta = S.fromList ( concat [ [(0, z, 8), (4, z, 3)] | z <- "+-" ]
+>         ++ [ (q, c, r) | (q,r) <- [(0,7),(2,2),(3,2),(4,2),(5,5),(6,5),(7,7),(8,7)], c <- ['0'..'9'] ]
+>         ++ [ (q, '.', 6) | q <- [0,7,8] ]
+>         ++ [ (q, 'e', 4) | q <- [0,5,7,8] ]
+>         ++ [ (q, '#', 1) | q <- [2,5,7] ] )
+>   }
+
+Masochisti můžou vyzkoušet:
+
+> fsm02_display = display $ toDot fsm02
