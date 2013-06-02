@@ -16,6 +16,7 @@ Moduly pro stavbu textových dokumentů.
 
 > import qualified Text.PrettyPrint as P
 > import Text.PrettyPrint(($$), ($+$), (<+>), (<>))
+> import qualified Data.Set as S
 
 Zobrazení vizualizací
 ---------------------
@@ -47,7 +48,21 @@ předpokladu, že je graphviz zkompilován s podporou xlib, patches welcome).
 Získání vizualizací
 -------------------
 
+Datové typy podporující visualizaci pomocí do textového formátu implementují třídu `ToDoc`:
+
+> class ToDoc a where
+>     toDoc :: a -> P.Doc
+
+Například množina, znak, řetězec:
+
+> instance (Show a) => ToDoc (S.Set a) where
+>     toDoc s = P.braces $ P.text (init . tail . show $ S.toList s)
+> instance ToDoc Char where toDoc ch = P.text $ show ch
+> instance ToDoc Int where toDoc = P.int
+
 Datové typy podporující grafovou vizualizaci přes `dot` implementují třídu `ToDot`:
 
 > class ToDot t where
 >     toDot :: t -> Dot
+
+Kreslení množin pomocí složených závorek:
