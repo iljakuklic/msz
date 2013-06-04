@@ -67,7 +67,24 @@ funkci *prec g h : ℕ<sup>k+1</sup>→ℕ<sup>m</sup>*.
 >     f xs 0 = g xs
 >     f xs n = h (xs ++ [n-1] ++ f xs (n-1))
 
-Příklad sčítání:
+Příklady
+--------
+
+Sčítání:
 
 > plus = prec (p 1) (s <> p 3)
 > evalPlus x y = evalPRF plus [x,y]
+
+Rodina konstantních funkcí (dá se definovat i na základě počátečních funkcí a primitivní rekurze, tady to ošmelíme zkratkou):
+
+> konst :: Int -> PRF
+> konst m = PRF (\_ -> [m])
+
+Předchůdce *decr* (předchůdce nuly je 0, jinak předchůdce *n* je *n-1*):
+
+> decr = prec (z <> p 0) (p 1)
+
+Links
+-----
+
+ * [Primitive recursive function (wiki)](http://en.wikipedia.org/wiki/Primitive_recursive_function)
