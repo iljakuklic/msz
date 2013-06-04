@@ -97,8 +97,7 @@ Jinak vrátí všechny derivační stromy vstupu vzhledem k dané gramatice.
 >          (trees, inp2) <- doSeq tns inp1
 >          return (tree:trees, inp2)
 
-Boring stuff
-------------
+### Boring stuff
 
 Výpis (non)terminálu na terminál (sic!):
 
