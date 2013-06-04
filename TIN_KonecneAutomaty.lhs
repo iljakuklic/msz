@@ -170,7 +170,7 @@ Tento svými stavy simuluje podmnožinu stavů, ve kterých můze nedeterministi
 >         mkt acc k@(s, a) = if S.null tgt then acc else mks (M.insert k tgt acc) tgt
 >             where tgt = S.fromList [r | (q,a',r) <- S.toList delta, a' == a, q `elem` s]
 >         next s = [(s, a') | a' <- toList $ ndAlphabet fsm ]
->         -- stav je konečný, jestliže obsahuje některý z původních stavů
+>         -- stav je konecový, jestliže obsahuje některý z původních stavů
 >         fini' q' = any (\q -> fini q) q'
 
 Deterministická verze automatu `fsm00` vypadá takto:
