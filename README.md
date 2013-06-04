@@ -12,7 +12,7 @@ Pokud by se nějaká otázka příliš rozlezla, bude rozělena na několik čá
 Příklad interakce
 -----------------
 
-1. Spuštění GHCi: ghci [TIN\_KonecneAutomaty.lhs](TIN_KonecneAutomaty.lhs)
+1. Spuštění GHCi: **ghci [TIN\_KonecneAutomaty.lhs](TIN_KonecneAutomaty.lhs)**
 2. Vyzkoušení definovaných funkcí:
 
 ```Haskell
