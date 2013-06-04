@@ -13,7 +13,7 @@ Příklad interakce
 -----------------
 
 1. Spuštění GHCi: `ghci TIN_KonecneAutomaty.lhs`
-2. VyzkouŠení definovaných funkcí:
+2. Vyzkoušení definovaných funkcí:
 
 ```Haskell
 *Main> -- zobrazíme si předdefinovaný konečný automat
