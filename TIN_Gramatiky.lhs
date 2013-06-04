@@ -72,8 +72,7 @@ Tuto gramatiku je možno interpretovat jednoduchým parserem (viz níže).
 > cfg02Parse = cfgParse cfg02
 > test01 = cfg02Parse "i+i*(i-i)"
 
-Derivační strom
----------------
+### Derivační strom
 
 *Derivační strom* (parse tree) je kořenový strom s uspořádanými větvemi. Listy jsou anotovány terminály,
 vnitřní uzly nonterminály, kořen odpovídá startovacímu symbolu.
@@ -97,7 +96,8 @@ Jinak vrátí všechny derivační stromy vstupu vzhledem k dané gramatice.
 >          (trees, inp2) <- doSeq tns inp1
 >          return (tree:trees, inp2)
 
-#### Boring stuff
+Boring stuff
+------------
 
 Výpis (non)terminálu na terminál (sic!):
 
