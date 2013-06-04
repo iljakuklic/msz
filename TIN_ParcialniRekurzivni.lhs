@@ -84,6 +84,19 @@ Předchůdce *decr* (předchůdce nuly je 0, jinak předchůdce *n* je *n-1*):
 
 > decr = prec (z <> p 0) (p 1)
 
+Násobení:
+
+> mult = prec (z <> p 0) (plus <> (p 1 >< p 3))
+
+Parciálně rekurzivní funkce
+---------------------------
+
+*Minimalizace* vytvoří z funkce *f : ℕ<sup>n+1</sup>→ℕ* funkci *µf : ℕ<sup>n</sup>→ℕ*,
+přičemž poslední složka vektoru funkce *f* je nejmenší taková, že tato funkce se vyhodnotí na 0.
+
+> mu :: PRF -> PRF
+> mu (PRF g) = PRF (\xs -> return $ head [ y | y <- [0..], g (xs ++ [y]) == [0] ])
+
 Links
 -----
 
