@@ -3,14 +3,14 @@ TIN: Parciální rekurzivní funkce
 
 *Parciální rekurzivní funkce* budou reprezentovány tímto typem:
 
-> newtype PRF = PRF ([Int] -> [Int])
+> newtype PRF = PRF ([Integer] -> [Integer])
 
 Pro jednoduchost nebudeme kontrolovat, zda odpovídají délky vektorů.
 Pokud tomu tak nebude, jednoduše selže pattern matching.
 
 Pro vyhodnocení primitivně rekurzivní funkce je možno použít tuto funkci:
 
-> evalPRF :: PRF -> [Int] -> [Int]
+> evalPRF :: PRF -> [Integer] -> [Integer]
 > evalPRF (PRF f) x = f x
 
 Počáteční funkce
@@ -77,7 +77,7 @@ Sčítání:
 
 Rodina konstantních funkcí (dá se definovat i na základě počátečních funkcí a primitivní rekurze, tady to ošmelíme zkratkou):
 
-> konst :: Int -> PRF
+> konst :: Integer -> PRF
 > konst m = PRF (\_ -> [m])
 
 Předchůdce *decr* (předchůdce nuly je 0, jinak předchůdce *n* je *n-1*):
