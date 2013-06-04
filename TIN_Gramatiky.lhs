@@ -28,7 +28,7 @@ Dále množiny terminálů a neterminálů bývají disjunktní, bude je třeba 
 Bezkontextová gramatika
 -----------------------
 
-*Bezkontextová gramatika* je čtveřice *G=(N,Σ,P,S)*, kde
+*Bezkontextová gramatika* (Context-free grammar) je čtveřice *G=(N,Σ,P,S)*, kde
 
  * *N* je konečná množina neterminálů (`n`)
  * *Σ* je konečná množina terminálů (`t`)
@@ -75,7 +75,7 @@ Tuto gramatiku je možno interpretovat jednoduchým parserem (viz níže).
 Derivační strom
 ---------------
 
-*Derivační strom* je kořenový strom s uspořádanými větvemi. Listy jsou anotovány terminály,
+*Derivační strom* (parse tree) je kořenový strom s uspořádanými větvemi. Listy jsou anotovány terminály,
 vnitřní uzly nonterminály, kořen odpovídá startovacímu symbolu.
 
 > data PTree t n = PTreeT t | PTreeN n [PTree t n]
@@ -124,3 +124,9 @@ Tisknutí derivačního stromu:
 > instance (Show t, Show n) => Show (PTree t n) where
 >     show = show . toDoc
 >     showList ts = showString . unlines $ map show ts
+
+Links
+-----
+
+ * [Context-free grammar (wiki)](http://en.wikipedia.org/wiki/Context-free_grammar)
+ * [Parse tree (wiki)](http://en.wikipedia.org/wiki/Parse_tree)
