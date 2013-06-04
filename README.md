@@ -9,4 +9,26 @@ Jmenné konvence: `ZKR_KratkyNazevOtazky.lhs`, kde `ZKR` je zkratka předmětu, 
 Číslo otázky uvedeno není, stejně to má každý obor jinak...
 Pokud by se nějaká otázka příliš rozlezla, bude rozělena na několik částí následovně: `ZKR_KratkyNazevOtazky_Podotazka.lhs`.
 
+Příklad interakce
+-----------------
+
+1. Spuštění GHCi: `ghci TIN_KonecneAutomaty.lhs`
+2. VyzkouŠení definovaných funkcí:
+
+```Haskell
+*Main> -- zobrazíme si předdefinovaný konečný automat
+*Main> display $ toDot fsm00
+*Main> -- a jeho deterministickou podobu
+*Main> display $ determinize toDot fsm00
+*Main> -- zkusíme, zda akceptuje nějaký vstup
+*Main> ndAccepts fsm00 "42#"
+True
+*Main> ndAccepts fsm00 "420#"
+False
+*Main> :q
+```
+
+Závěrem
+-------
+
 Přispivatelé, patche a forky vítány. Enjoy.
